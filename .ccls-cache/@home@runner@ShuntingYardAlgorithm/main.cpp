@@ -1,41 +1,38 @@
 #include <iostream>
+#include "stack.h"
 
 using namespace std;
 
-struct Node
-{
-  int value;
-  Node* previous = NULL;
-  Node* next = NULL;
-};
 
-bool push(Node* &node, Node* &stackHead);
-Node* pop(Node* stackHead);
+
+void push(Node* &node, Node* &stackHead);
+Node* pop(Node* &stackHead);
+bool enqueue(Node* node, Node* rear, Node* front);
 
 int main()
 {
-  Node* stackHead = NULL; //head is the top of the stack
-}
-
-bool push(Node* &node, Node* &stackHead) //add node to top of stack
-{
-  if(stackHead == NULL)
-  {
-    return false; //list empty
-  }
-  if(node->previous != NULL)
-  {
-    node->previous = stackHead;
-  }
-  stackHead = node;
-  return true; //list not empty
+  Node* stackHead = NULL; //top of the stack
+  Node* rear = NULL; //end of the queue, where nodes are added
+  Node* front = NULL; //front of queue, where nodes are removed
 }
 
 Node* pop(Node* &stackHead)
 {
-  Node* temp = stackHead;
-  stackHead = stackHead->previous;
-  return temp;
-  delete temp;
+  
+}
+
+Node* peek(Node* &stackHead)
+{
+  return stackHead;  
+}
+
+void enqueue(Node* &node, Node* &rear, Node* &front)
+{
+  
+}
+
+Node* dequeue(Node* front)
+{
+  
 }
 
