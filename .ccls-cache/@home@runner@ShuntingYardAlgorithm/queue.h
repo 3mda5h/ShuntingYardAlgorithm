@@ -15,7 +15,6 @@ class queue
     queue();
     void enqueue(Node* node);
     queue::Node* dequeue();
-  private:
     queue::Node* rear;
     queue::Node* front;
 };

@@ -8,7 +8,7 @@ class stack
   public:
    struct Node
     {
-      int value;
+      char value;
       Node* previous = NULL;
     };
     stack();

@@ -6,7 +6,7 @@ queue::queue()
   queue::Node* front = NULL;
 }
 
-void queue::enqueue(Node* node)
+void queue::enqueue(Node* node) //add node to end of queue
 {
   if(rear == NULL) //queue is empty
   {
@@ -19,14 +19,19 @@ void queue::enqueue(Node* node)
   rear = node;
 }
 
-queue::Node* queue::dequeue()
+queue::Node* queue::dequeue() //remove node from front of queue
 {
-  if(rear == NULL)
+  if(front == NULL) //queue is empty
   {
     return NULL;
   }
   Node* temp = front;
-  front->previous = front;
-  front->previous->next = NULL;
+  if(front->previous != NULL)
+  {
+    front = front->previous;
+    front->next = NULL;
+    return temp;
+  }
+  front = NULL;
   return temp;
 }
