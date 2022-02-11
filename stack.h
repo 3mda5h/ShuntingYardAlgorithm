@@ -13,9 +13,8 @@ class stack
     };
     stack();
     void push(Node* &node);
-    Node* pop();
-    Node* peek();
-  private:
-    Node* head;
-}
+    stack::Node* pop();
+    stack::Node* peek();
+    stack::Node* head;
+};
 #endif

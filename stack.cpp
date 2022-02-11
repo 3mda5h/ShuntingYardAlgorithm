@@ -3,7 +3,7 @@
 
 stack::stack()
 {
-  Node* head = NULL; //top of the stack
+  stack::Node* head = NULL; //top of the stack
 }
 
 void stack::push(Node* &node) //add to top of stack

@@ -10,4 +10,5 @@ class treeNode
     treeNode* left;
     treeNode* right;
     int value;
-}
+};
+#endif

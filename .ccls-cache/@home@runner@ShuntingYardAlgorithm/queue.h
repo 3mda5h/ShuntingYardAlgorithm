@@ -1,6 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 #include <iostream>
+#include "stack.h"
 
 class queue
 {
@@ -13,9 +14,9 @@ class queue
     }; 
     queue();
     void enqueue(Node* node);
-    Node* dequeue();
+    queue::Node* dequeue();
   private:
-    Node* rear;
-    Node* front;
-}
+    queue::Node* rear;
+    queue::Node* front;
+};
 #endif
