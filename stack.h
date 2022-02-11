@@ -4,13 +4,13 @@
 #include <iostream>
 
 class stack
-{
-  struct Node
-  {
-    int value;
-    Node* previous = NULL;
-  }; 
+{ 
   public:
+   struct Node
+    {
+      int value;
+      Node* previous = NULL;
+    };
     stack();
     void push(Node* &node);
     Node* pop();

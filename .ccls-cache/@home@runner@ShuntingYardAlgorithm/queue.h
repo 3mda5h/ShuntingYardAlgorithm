@@ -4,13 +4,13 @@
 
 class queue
 {
-  struct Node
-  {
-    int value;
-    Node* previous = NULL;
-    Node* next = NULL;
-  }; 
   public:
+  struct Node
+    {
+      char value;
+      Node* previous = NULL;
+      Node* next = NULL;
+    }; 
     queue();
     void enqueue(Node* node);
     Node* dequeue();

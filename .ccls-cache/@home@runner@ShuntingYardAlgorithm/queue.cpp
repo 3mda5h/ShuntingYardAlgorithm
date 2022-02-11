@@ -2,8 +2,8 @@
 #include "queue.h"
 queue::queue()
 {
-  Node* rear = NULL;
-  Node* front = NULL;
+  queue::Node* rear = NULL;
+  queue::Node* front = NULL;
 }
 
 void queue::enqueue(Node* node)
