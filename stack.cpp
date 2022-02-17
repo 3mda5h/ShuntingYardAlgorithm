@@ -3,33 +3,33 @@
 
 stack::stack()
 {
-  stack::Node* head = NULL; //top of the stack
+  queue::Node* head = NULL; //top of the stack
 }
 
-void stack::push(Node* &node) //add to top of stack
+void stack::push(queue::Node* &node) //add to top of stack
 {
   if(head == NULL)
   {
     head = node;
     return;
-  }  
+  }
   node->previous = head;
   head = node;
 }
 
-stack::Node* stack::pop() //remove top of stack
+queue::Node* stack::pop() //remove top of stack
 {
   if(head == NULL)
   {
     return NULL; //stack empty
   }
-  Node* temp = head;
-  temp->previous = NULL;
+  queue::Node* temp = head;
+  //temp->previous = NULL;
   head = head->previous;
   return temp;
 }
 
-stack::Node* stack::peek()
+queue::Node* stack::peek()
 {
   return head;
 }

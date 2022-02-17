@@ -12,7 +12,7 @@ void stack::push(Node* &node) //add to top of stack
   {
     head = node;
     return;
-  }  
+  }
   node->previous = head;
   head = node;
 }
@@ -24,7 +24,7 @@ stack::Node* stack::pop() //remove top of stack
     return NULL; //stack empty
   }
   Node* temp = head;
-  temp->previous = NULL;
+  //temp->previous = NULL;
   head = head->previous;
   return temp;
 }

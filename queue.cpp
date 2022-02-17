@@ -26,9 +26,9 @@ queue::Node* queue::dequeue() //remove node from front of queue
     return NULL;
   }
   Node* temp = front;
-  if(front->previous != NULL)
+  if(front->previous != NULL) //to avoid seg fault *heart face*
   {
-    front = front->previous;
+    front = front->previous; 
     front->next = NULL;
     return temp;
   }
