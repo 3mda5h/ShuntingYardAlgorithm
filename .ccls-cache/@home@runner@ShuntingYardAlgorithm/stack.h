@@ -2,19 +2,20 @@
 #define STACK_H
 
 #include <iostream>
+#include "queue.h"
 
 class stack
 { 
   public:
-   struct Node
+   /*struct Node
     {
       char value;
       Node* previous = NULL;
-    };
+    };*/
     stack();
-    void push(Node* &node);
-    stack::Node* pop();
-    stack::Node* peek();
-    stack::Node* head;
+    void push(queue::Node* &node);
+    queue::Node* pop();
+    queue::Node* peek();
+    queue::Node* head;
 };
 #endif

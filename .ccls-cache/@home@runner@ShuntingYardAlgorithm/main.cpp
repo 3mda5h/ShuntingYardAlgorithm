@@ -1,3 +1,5 @@
+//shunting yard algorithm - convert infix to postfix
+//2/17/22
 #include <iostream>
 #include <cstring>
 #include "stack.h"
@@ -42,39 +44,43 @@ void shuntingyard(map<const char*, int>&precedence)
     else if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^') //if operator
     {
       o1 = expression[i];
-      o2 = operators->peek()->value;
-      while(operators->peek()->value != ')' && ((precedence.at(&o2) > precedence.at(&o1)) || (precedence.at(&o2) == precedence.at(&o1) && o1 != '^')))
+      if(operators->peek() != NULL) //if stack is not empty
       {
-        output->enqueue(operators->pop());
-        
         o2 = operators->peek()->value;
+        while(operators->peek() != NULL && o2 != '(' && ((precedence.at(&o2) > precedence.at(&o1)) || (precedence.at(&o2) == precedence.at(&o1) && o1 != '^'))) 
+        {
+          //pop o2 and enqueue it to output
+          output->enqueue(operators->pop());
+          o2 = operators->peek()->value;
+          //push o1
+          queue::Node* newNode = new queue::Node();
+          newNode->value = expression[i];
+          operators->push(newNode);
+        }
       }
-      stack::Node* newNode = new stack::Node();
-      newNode->value = expression[i];
-      operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
-      stack::Node* newNode = new stack::Node();
+      //push onto operator stack
+      queue::Node* newNode = new queue::Node();
       newNode->value = expression[i];
       operators->push(newNode);
     }
     else if(expression[i] == ')')
     {
-      while(operators->peek()->value != '(' && operators->peek() != NULL)
+      while( operators->peek() != NULL && operators->peek()->value != '(')
       {
-        
+        //pop from operators and queue into output
+        output->enqueue(operators->pop());
       }
+      delete operators->pop(); //discard left parenthesis
     }
   }
   //pop operators off stack and add them to output queue
-  char nodeValue;
   while(operators->peek() != NULL)
   {
-    nodeValue = operators->pop()->value; //remove top of stack, get its value
-    queue::Node* newNode = new queue::Node(); //new queue node so it doesnt get angry when i try to put it in queue lololol
-    newNode->value = nodeValue;
-    output->enqueue(newNode); //add this to queue
+    output->enqueue(operators->pop()); //add top operator to queue
+    
   }
   //print out everything in output queue
   while(output->front != NULL)
@@ -83,4 +89,5 @@ void shuntingyard(map<const char*, int>&precedence)
     cout << output->dequeue()->value;
   }
 }
+  
 
