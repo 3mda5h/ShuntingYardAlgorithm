@@ -13,13 +13,11 @@ void shuntingyard(map<const char*, int>&precedence);
 int main()
 {
   map<const char*, int>precedence;
-  precedence["^"] = 4;
-  precedence["*"] = 3;
-  precedence["/"] = 3;
-  precedence["+"] = 2;
-  precedence["-"] = 2;
-  //precedence.insert(pair<const char*, const char*>("^", "right"));
-  //precedence.insert(pair<const char*, int>("^", 3))
+  precedence.emplace("^", 4);
+  precedence.emplace("/", 3);  
+  precedence.emplace("*", 3);
+  precedence.emplace("+", 2);
+  precedence.emplace("-", 2);
 
   shuntingyard(precedence);
 }
@@ -47,17 +45,18 @@ void shuntingyard(map<const char*, int>&precedence)
       if(operators->peek() != NULL) //if stack is not empty
       {
         o2 = operators->peek()->value;
+        cout << o2 << endl;
         while(operators->peek() != NULL && o2 != '(' && ((precedence.at(&o2) > precedence.at(&o1)) || (precedence.at(&o2) == precedence.at(&o1) && o1 != '^'))) 
         {
           //pop o2 and enqueue it to output
           output->enqueue(operators->pop());
           o2 = operators->peek()->value;
           //push o1
-          queue::Node* newNode = new queue::Node();
-          newNode->value = expression[i];
-          operators->push(newNode);
         }
       }
+      queue::Node* newNode = new queue::Node();
+      newNode->value = expression[i];
+      operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
@@ -80,7 +79,6 @@ void shuntingyard(map<const char*, int>&precedence)
   while(operators->peek() != NULL)
   {
     output->enqueue(operators->pop()); //add top operator to queue
-    
   }
   //print out everything in output queue
   while(output->front != NULL)
