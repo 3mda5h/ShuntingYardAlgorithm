@@ -8,21 +8,15 @@
 #include <map>
 
 using namespace std;
-void shuntingyard(map<const char*, int>&precedence);
+void shuntingyard();
+int precedence(char c);
 
 int main()
 {
-  map<const char*, int>precedence;
-  precedence.emplace("^", 4);
-  precedence.emplace("/", 3);  
-  precedence.emplace("*", 3);
-  precedence.emplace("+", 2);
-  precedence.emplace("-", 2);
-
-  shuntingyard(precedence);
+  shuntingyard();
 }
 
-void shuntingyard(map<const char*, int>&precedence)
+void shuntingyard()
 {
   char expression[100];
   cout << "Enter the expression" << endl;
@@ -46,7 +40,8 @@ void shuntingyard(map<const char*, int>&precedence)
       {
         o2 = operators->peek()->value;
         cout << o2 << endl;
-        while(operators->peek() != NULL && o2 != '(' && ((precedence.at(&o2) > precedence.at(&o1)) || (precedence.at(&o2) == precedence.at(&o1) && o1 != '^'))) 
+      //cout << precedence.at(o2) << endl;
+        while(operators->peek() != NULL && o2 != '(' && ((precedence(o2) > precedence(o1)) || (precedence(o2) == precedence(o1) && o1 != '^'))) 
         {
           //pop o2 and enqueue it to output
           output->enqueue(operators->pop());
@@ -87,5 +82,15 @@ void shuntingyard(map<const char*, int>&precedence)
     cout << output->dequeue()->value;
   }
 }
+
+int precedence(char c)
+{
+  if(c == '^') return 4;
+  if(c == '/') return 3;
+  if(c == '*') return 3;
+  if(c == '-') return 2;
+  if(c == '+') return 2;
+}
+
   
 
