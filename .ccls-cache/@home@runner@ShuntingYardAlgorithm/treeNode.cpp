@@ -3,7 +3,7 @@
 
 using namespace std;
 
-treeNode::treeNode(int newValue)
+treeNode::treeNode(char newValue)
 {
   value = newValue;
   left = NULL;

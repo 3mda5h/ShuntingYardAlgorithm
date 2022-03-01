@@ -1,6 +1,8 @@
 #include <iostream>
 #include "stack.h"
 
+using namespace std;
+
 stack::stack()
 {
   queue::Node* head = NULL; //top of the stack
@@ -15,6 +17,7 @@ void stack::push(queue::Node* &node) //add to top of stack
   }
   node->previous = head;
   head = node;
+  //cout << "new head is now:" << head->value << endl;
 }
 
 queue::Node* stack::pop() //remove top of stack
@@ -24,7 +27,7 @@ queue::Node* stack::pop() //remove top of stack
     return NULL; //stack empty
   }
   queue::Node* temp = head;
-  //temp->previous = NULL;
+  temp->previous = NULL;
   head = head->previous;
   return temp;
 }

@@ -3,9 +3,9 @@
 //2/17/22
 #include <iostream>
 #include <cstring>
-#include "stack.h"
-#include "queue.h"
-#include "treeNode.h"
+#include "Stack.h"
+#include "Queue.h"
+#include "Node.h"
 #include <map>
 
 using namespace std;
@@ -34,15 +34,15 @@ int main()
 
 char* shuntingyard(char* expression)
 {
-  queue* output = new queue();
-  stack* operators = new stack();
+  Queue* output = new Queue();
+  Stack* operators = new Stack();
   char o1;
   char o2;
   for(int i = 0; i < strlen(expression); i++)
   {
     if(isdigit(expression[i]) == true) //if number add to output queue
     {
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       output->enqueue(newNode);
     }
@@ -56,18 +56,22 @@ char* shuntingyard(char* expression)
         {
           //pop o2 and enqueue it to output
           output->enqueue(operators->pop());
-          o2 = operators->peek()->value;
+          if(operators->peek() != NULL)
+          {
+            o2 = operators->peek()->value; 
+          }
         }
       }
+      //(3*4)^(8*9)
       //enqueue operator 
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
       //push onto operator stack
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       operators->push(newNode);
     }
@@ -86,7 +90,7 @@ char* shuntingyard(char* expression)
   {
     output->enqueue(operators->pop()); //add top operator to queue
   }
-  char outputc[100];
+  char* outputc = new char[100];
   //add everything in output queue to output char[]
   int i = 0;
   while(output->front != NULL)
@@ -97,6 +101,7 @@ char* shuntingyard(char* expression)
   return outputc;
 }
 
+//3+4/2+(3-4)^8
 //returns precedence given an operator
 //could have done with a map but it wasn't working?
 int precedence(char c)
@@ -106,11 +111,25 @@ int precedence(char c)
   if(c == '*') return 3;
   if(c == '-') return 2;
   if(c == '+') return 2;
+  return 0;
 }
 
 void expressionTree(char* conversion, char* expression)
 {
-  
+  Stack* stack = new Stack();
+  for(int i = 0; i < strlen(expression); i++)
+  {
+    if(isdigit(expression[i]) == true)
+    {
+      Node* root = new Node();
+      root->value = expression[0];
+      stack->push(root);
+    }
+    if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^')
+    {
+      
+    }
+  }  
 }
 
   

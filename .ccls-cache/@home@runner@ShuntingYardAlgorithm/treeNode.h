@@ -5,10 +5,10 @@
 class treeNode
 {
   public:
-    treeNode(int value);
+    treeNode(char value);
   private:
     treeNode* left;
     treeNode* right;
-    int value;
+    char value;
 };
 #endif

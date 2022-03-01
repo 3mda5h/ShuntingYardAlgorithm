@@ -1,11 +1,11 @@
 #include <iostream>
-#include "treeNode.h"
+#include "Node.h"
 
 using namespace std;
 
-treeNode::treeNode(int newValue)
+Node::Node()
 {
-  value = newValue;
+  value = NULL;
   left = NULL;
   right = NULL;
 }
