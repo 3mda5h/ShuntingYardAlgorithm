@@ -9,7 +9,7 @@ Queue::Queue()
   Node* front = NULL;
 }
 
-void Queue::enqueue(Node* node) //add node to end of queue
+void Queue::enqueue(Node* node) //add node to left end of queue
 {
   if(rear == NULL) //queue is empty
   {
@@ -22,14 +22,14 @@ void Queue::enqueue(Node* node) //add node to end of queue
   rear = node;
 }
 
-Node* Queue::dequeue() //remove node from front of queue
+Node* Queue::dequeue() //remove node from right end of queue
 {
   if(front == NULL) //queue is empty
   {
     return NULL;
   }
   Node* temp = front;
-  if(front->left != NULL) //to avoid seg fault *heart face*
+  if(front->left != NULL) //to avoid seg fault <3
   {
     front = front->left; 
     front->right = NULL;

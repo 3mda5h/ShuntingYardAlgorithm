@@ -1,17 +1,20 @@
 //shunting yard algorithm - convert infix to postfix
-//binary tree - convert postfix to infix or prefix
-//2/17/22
+//binary tree - traverse tree and output postfix, infix, or prefix
+//Emily MacPherson 2/17/22
 #include <iostream>
 #include <cstring>
-#include "stack.h"
-#include "queue.h"
-#include "treeNode.h"
-#include <map>
+#include "Stack.h"
+#include "Queue.h"
+#include "Node.h"
 
 using namespace std;
 char* shuntingyard(char* expression);
-void expressionTree(char* conversion, char* expression);
 int precedence(char c);
+void expressionTree(char* conversion, char* expression);
+void infixTraversal(Node* tree);
+void prefixTraversal(Node* tree);
+void postfixTraversal(Node* tree);
+bool isOperator(char value);
 
 int main()
 {
@@ -34,19 +37,19 @@ int main()
 
 char* shuntingyard(char* expression)
 {
-  queue* output = new queue();
-  stack* operators = new stack();
+  Queue* output = new Queue();
+  Stack* operators = new Stack();
   char o1;
   char o2;
   for(int i = 0; i < strlen(expression); i++)
   {
     if(isdigit(expression[i]) == true) //if number add to output queue
     {
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       output->enqueue(newNode);
     }
-    else if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^') //if operator
+    else if(isOperator(expression[i]) == true)
     {
       o1 = expression[i];
       if(operators->peek() != NULL) //if stack is not empty
@@ -64,14 +67,14 @@ char* shuntingyard(char* expression)
       }
       //(3*4)^(8*9)
       //enqueue operator 
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
       //push onto operator stack
-      queue::Node* newNode = new queue::Node();
+      Node* newNode = new Node();
       newNode->value = expression[i];
       operators->push(newNode);
     }
@@ -102,8 +105,7 @@ char* shuntingyard(char* expression)
 }
 
 //3+4/2+(3-4)^8
-//returns precedence given an operator
-//could have done with a map but it wasn't working?
+//returns precedence given an operator - could have done with a map but it was being stinky
 int precedence(char c)
 {
   if(c == '^') return 4;
@@ -116,19 +118,78 @@ int precedence(char c)
 
 void expressionTree(char* conversion, char* expression)
 {
-  stack* treeStack = new stack();
+  //create expression tree from postfix expression
+  Stack* stack = new Stack();
   for(int i = 0; i < strlen(expression); i++)
   {
     if(isdigit(expression[i]) == true)
     {
-      treeNode* root = new treeNode(expression[0]);
-      treeStack->push(root);
+      Node* newNode = new Node();
+      newNode->value = expression[i];
+      stack->push(newNode);
     }
-    if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^')
+    if(isOperator(expression[i]) == true)
     {
-      
+      Node* root = new Node();
+      root->left = stack->pop(); 
+      root->right = stack->pop();
+      stack->push(root);
     }
+  }
+  Node* tree = stack->pop();
+  
+  //traverse tree
+  if(strcmp(conversion, "infix") == 0)
+  {
+    cout << "infix: ";
+    infixTraversal(tree);
+  }
+  if(strcmp(conversion, "prefix") == 0)
+  {
+    prefixTraversal(tree);
+  }
+  if(strcmp(conversion, "postfix") == 0)
+  {
+    postfixTraversal(tree);
   }  
+}
+
+void infixTraversal(Node* tree)
+{
+  if(tree != NULL)
+  {
+    if(isOperator(tree->value) == true)
+    {
+      cout << "(";
+    }
+    infixTraversal(tree->left);
+    cout << tree->value;
+    infixTraversal(tree->right);
+    if(isOperator(tree->value))
+    {
+      cout << ")";
+    }
+  }
+  cout << "tree is null" << endl;
+}
+
+void prefixTraversal(Node* tree)
+{
+  
+}
+
+void postfixTraversal(Node* tree)
+{
+  
+}
+
+bool isOperator(char value)
+{
+  if(value == '+' || value == '-' || value == '/' || value == '*' || value == '^')
+  {
+    return true;
+  }
+  return false;
 }
 
   

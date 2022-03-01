@@ -5,7 +5,7 @@
 class Node
 {
   public:
-    Node();
+    Node(char newValue);
     Node* left;
     Node* right;
     char value;

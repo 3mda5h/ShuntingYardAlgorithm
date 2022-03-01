@@ -3,9 +3,9 @@
 
 using namespace std;
 
-Node::Node()
+Node::Node(char newValue)
 {
-  value = NULL;
+  value = newValue;
   left = NULL;
   right = NULL;
 }

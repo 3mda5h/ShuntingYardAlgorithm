@@ -1,17 +1,20 @@
 //shunting yard algorithm - convert infix to postfix
-//binary tree - convert postfix to infix or prefix
-//2/17/22
+//binary tree - traverse tree and output postfix, infix, or prefix
+//Emily MacPherson 2/17/22
 #include <iostream>
 #include <cstring>
 #include "Stack.h"
 #include "Queue.h"
 #include "Node.h"
-#include <map>
 
 using namespace std;
 char* shuntingyard(char* expression);
-void expressionTree(char* conversion, char* expression);
 int precedence(char c);
+void expressionTree(char* conversion, char* expression);
+void infixTraversal(Node* tree);
+void prefixTraversal(Node* tree);
+void postfixTraversal(Node* tree);
+bool isOperator(char value);
 
 int main()
 {
@@ -42,11 +45,10 @@ char* shuntingyard(char* expression)
   {
     if(isdigit(expression[i]) == true) //if number add to output queue
     {
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       output->enqueue(newNode);
     }
-    else if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^') //if operator
+    else if(isOperator(expression[i]) == true)
     {
       o1 = expression[i];
       if(operators->peek() != NULL) //if stack is not empty
@@ -62,17 +64,15 @@ char* shuntingyard(char* expression)
           }
         }
       }
-      //(3*4)^(8*9)
+      //(3*4)^(8*9) - SEG FAULT
       //enqueue operator 
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
       //push onto operator stack
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       operators->push(newNode);
     }
     else if(expression[i] == ')')
@@ -101,9 +101,7 @@ char* shuntingyard(char* expression)
   return outputc;
 }
 
-//3+4/2+(3-4)^8
-//returns precedence given an operator
-//could have done with a map but it wasn't working?
+//returns precedence given an operator - could have done with a map but it was being stinky
 int precedence(char c)
 {
   if(c == '^') return 4;
@@ -116,20 +114,91 @@ int precedence(char c)
 
 void expressionTree(char* conversion, char* expression)
 {
+  //create expression tree from postfix expression
   Stack* stack = new Stack();
   for(int i = 0; i < strlen(expression); i++)
   {
     if(isdigit(expression[i]) == true)
     {
-      Node* root = new Node();
-      root->value = expression[0];
+      Node* leaf = new Node(expression[i]);
+      stack->push(leaf);
+    }
+    if(isOperator(expression[i]) == true)
+    {
+      Node* root = new Node(expression[i]);
+      root->left = stack->pop();
+      root->right = stack->pop();
       stack->push(root);
     }
-    if(expression[i] == '+' || expression[i] == '-' || expression[i] == '/' || expression[i] == '*' || expression[i] == '^')
-    {
-      
-    }
+  }
+  Node* tree = stack->pop();
+  
+  //traverse tree
+  if(strcmp(conversion, "infix") == 0)
+  {
+    cout << "infix: ";
+    infixTraversal(tree);
+    cout << endl;
+  }
+  else if(strcmp(conversion, "prefix") == 0)
+  {
+    cout << "prefix: ";
+    prefixTraversal(tree);
+    cout << endl;
+  }
+  else if(strcmp(conversion, "postfix") == 0)
+  {
+    cout << "postfix: ";
+    postfixTraversal(tree);
+    cout << endl;
   }  
+}
+
+void infixTraversal(Node* tree)
+{
+  if(tree != NULL)
+  {
+    if(isOperator(tree->value) == true)
+    {
+      cout << "(";
+    }
+    infixTraversal(tree->left);
+    cout << tree->value;
+    infixTraversal(tree->right);
+    if(isOperator(tree->value))
+    {
+      cout << ")";
+    }
+  }
+}
+
+void prefixTraversal(Node* tree)
+{
+  if(tree != NULL)
+  {
+    cout << tree->value;
+    prefixTraversal(tree->left);
+    prefixTraversal(tree->right);
+  }
+}
+
+void postfixTraversal(Node* tree)
+{
+  if(tree != NULL)
+  {
+    postfixTraversal(tree->left);
+    postfixTraversal(tree->right);
+    cout << tree->value;
+  }
+}
+
+bool isOperator(char value)
+{
+  if(value == '+' || value == '-' || value == '/' || value == '*' || value == '^')
+  {
+    return true;
+  }
+  return false;
 }
 
   
