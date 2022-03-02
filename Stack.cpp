@@ -27,6 +27,7 @@ Node* Stack::pop() //remove from right end of stack
   }
   Node* temp = head;
   head = head->left;
+  temp->left = NULL;
   return temp;
 }
 

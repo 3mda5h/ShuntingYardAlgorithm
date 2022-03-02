@@ -8,4 +8,5 @@ Node::Node(char newValue)
   value = newValue;
   left = NULL;
   right = NULL;
+  tree = NULL;
 }

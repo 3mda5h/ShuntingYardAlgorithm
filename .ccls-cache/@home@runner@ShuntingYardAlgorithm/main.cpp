@@ -45,8 +45,7 @@ char* shuntingyard(char* expression)
   {
     if(isdigit(expression[i]) == true) //if number add to output queue
     {
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       output->enqueue(newNode);
     }
     else if(isOperator(expression[i]) == true)
@@ -65,17 +64,15 @@ char* shuntingyard(char* expression)
           }
         }
       }
-      //(3*4)^(8*9)
+      //4^(8*9) - SEG FAULT
       //enqueue operator 
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       operators->push(newNode);
     }
     else if(expression[i] == '(')
     {
       //push onto operator stack
-      Node* newNode = new Node();
-      newNode->value = expression[i];
+      Node* newNode = new Node(expression[i]);
       operators->push(newNode);
     }
     else if(expression[i] == ')')
@@ -104,7 +101,6 @@ char* shuntingyard(char* expression)
   return outputc;
 }
 
-//3+4/2+(3-4)^8
 //returns precedence given an operator - could have done with a map but it was being stinky
 int precedence(char c)
 {
@@ -124,15 +120,15 @@ void expressionTree(char* conversion, char* expression)
   {
     if(isdigit(expression[i]) == true)
     {
-      Node* newNode = new Node();
-      newNode->value = expression[i];
-      stack->push(newNode);
+      Node* leaf = new Node(expression[i]);
+      
+      stack->push(leaf);
     }
-    if(isOperator(expression[i]) == true)
+    else if(isOperator(expression[i]) == true)
     {
-      Node* root = new Node();
-      root->left = stack->pop(); 
-      root->right = stack->pop();
+      Node* root = new Node(expression[i]);
+      root->left = stack->pop()->tree;
+      root->right = stack->pop()->tree;
       stack->push(root);
     }
   }
@@ -143,14 +139,19 @@ void expressionTree(char* conversion, char* expression)
   {
     cout << "infix: ";
     infixTraversal(tree);
+    cout << endl;
   }
-  if(strcmp(conversion, "prefix") == 0)
+  else if(strcmp(conversion, "prefix") == 0)
   {
+    cout << "prefix: ";
     prefixTraversal(tree);
+    cout << endl;
   }
-  if(strcmp(conversion, "postfix") == 0)
+  else if(strcmp(conversion, "postfix") == 0)
   {
+    cout << "postfix: ";
     postfixTraversal(tree);
+    cout << endl;
   }  
 }
 
@@ -170,17 +171,26 @@ void infixTraversal(Node* tree)
       cout << ")";
     }
   }
-  cout << "tree is null" << endl;
 }
 
 void prefixTraversal(Node* tree)
 {
-  
+  if(tree != NULL)
+  {
+    cout << tree->value;
+    prefixTraversal(tree->left);
+    prefixTraversal(tree->right);
+  }
 }
 
 void postfixTraversal(Node* tree)
 {
-  
+  if(tree != NULL)
+  {
+    postfixTraversal(tree->left);
+    postfixTraversal(tree->right);
+    cout << tree->value;
+  }
 }
 
 bool isOperator(char value)

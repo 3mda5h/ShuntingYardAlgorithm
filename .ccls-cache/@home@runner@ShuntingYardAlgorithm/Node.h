@@ -5,9 +5,10 @@
 class Node
 {
   public:
-    Node();
+    Node(char newValue);
     Node* left;
     Node* right;
+    Node* tree;
     char value;
 };
 #endif

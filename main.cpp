@@ -64,7 +64,7 @@ char* shuntingyard(char* expression)
           }
         }
       }
-      //(3*4)^(8*9) - SEG FAULT
+      //4^(8*9) - SEG FAULT
       //enqueue operator 
       Node* newNode = new Node(expression[i]);
       operators->push(newNode);
@@ -121,17 +121,21 @@ void expressionTree(char* conversion, char* expression)
     if(isdigit(expression[i]) == true)
     {
       Node* leaf = new Node(expression[i]);
-      stack->push(leaf);
+      Node* stackNode = new Node(NULL);
+      stackNode->tree = leaf;
+      stack->push(stackNode);
     }
-    if(isOperator(expression[i]) == true)
+    else if(isOperator(expression[i]) == true)
     {
       Node* root = new Node(expression[i]);
-      root->left = stack->pop();
-      root->right = stack->pop();
-      stack->push(root);
+      Node* stackNode = new Node(NULL);
+      stackNode->tree = root;
+      root->right = stack->pop()->tree;
+      root->left = stack->pop()->tree;
+      stack->push(stackNode);
     }
   }
-  Node* tree = stack->pop();
+  Node* tree = stack->pop()->tree;
   
   //traverse tree
   if(strcmp(conversion, "infix") == 0)

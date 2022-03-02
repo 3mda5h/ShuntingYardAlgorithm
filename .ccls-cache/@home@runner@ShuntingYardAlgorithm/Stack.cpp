@@ -5,30 +5,29 @@ using namespace std;
 
 Stack::Stack()
 {
-  Node* head = NULL; //top of the stack
+  Node* head = NULL; //right end of the stack
 }
 
-void Stack::push(Node* &node) //add to top of stack
+void Stack::push(Node* &node) //add to right end of stack
 {
   if(head == NULL)
   {
     head = node;
     return;
   }
-  node->left = head; //left = previous
+  node->left = head;
   head = node;
-  //cout << "new head is now:" << head->value << endl;
 }
 
-Node* Stack::pop() //remove top of stack
+Node* Stack::pop() //remove from right end of stack
 {
   if(head == NULL)
   {
     return NULL; //stack empty
   }
   Node* temp = head;
-  temp->left = NULL;
   head = head->left;
+  temp->left = NULL;
   return temp;
 }
 
